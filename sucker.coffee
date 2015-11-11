@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+path = require 'path'
 program = require 'commander'
 ProgressBar = require 'progress'
 https = require 'https'
@@ -131,8 +132,8 @@ getImagesFromSubreddit = (subreddit, imageList) ->
 
         
         #grab the file name for local saving
-        filename = image.link
         
+        filename = image.id + path.extname(image.link)
         #check to see if the file exists locally, so that we don't just absolutely hammer imgur
         fs.exists process.cwd() + "/sucked/" + subreddit + "/" + filename, (exists) ->
           unless exists
