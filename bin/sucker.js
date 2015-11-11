@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 (function() {
-  var ProgressBar, checkRateLimit, fs, getImagesFromSubreddit, http, https, moment, program, suck, _;
+  var ProgressBar, _, checkRateLimit, fs, getImagesFromSubreddit, http, https, moment, path, program, suck;
+
+  path = require('path');
 
   program = require('commander');
 
@@ -126,10 +128,10 @@
       }
       return imageList.forEach(function(image, index, array) {
         var filename;
-        filename = image.link;
+        filename = image.id + path.extname(image.link);
         return fs.exists(process.cwd() + "/sucked/" + subreddit + "/" + filename, function(exists) {
-          var e, imageRequest;
-          if (!exists) {
+          var e, error, imageRequest;
+          if (!(exists && image.is_album)) {
             try {
               return imageRequest = http.get("http://i.imgur.com/" + image.link, function(imageResults) {
                 var imagedata;
