@@ -136,7 +136,7 @@ getImagesFromSubreddit = (subreddit, imageList) ->
         filename = image.id + path.extname(image.link)
         #check to see if the file exists locally, so that we don't just absolutely hammer imgur
         fs.exists process.cwd() + "/sucked/" + subreddit + "/" + filename, (exists) ->
-          unless exists
+          unless exists and image.is_album # skip albums for now
             try
               #grab the image from imgur
               imageRequest = http.get "http://i.imgur.com/" + image.link, (imageResults) ->
